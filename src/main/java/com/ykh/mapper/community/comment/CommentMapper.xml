@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ykh.mapper.community.comment.CommentMapper">
+    <resultMap id="comment" type="com.ykh.pojo.community.Comment">
+        <id column="id" property="id"/>
+        <result column="articleId" property="articleId"/>
+        <result column="parentId" property="parentId"/>
+        <result column="commentor" property="commentor"/>
+        <result column="createTime" property="createTime"/>
+        <result column="content" property="content"/>
+        <result column="likeCount" property="likeCount"/>
+    </resultMap>
+    <select id="findCommentTop" resultMap="comment">
+        select * from comment where articleId=#{articleId} and parentId =0 order by id desc limit 0,10
+    </select>
+    <select id="commentCountById" resultType="int">
+        select count(1) from comment where parentId = #{parentId}
+    </select>
+    <insert id="insertComment" >
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            articleId,
+            <if test="parentId!=null">parentId,</if>
+            commentor,createTime,content
+        </trim>
+            <trim prefix="values(" suffix=")" suffixOverrides=",">
+                #{articleId},
+                <if test="parentId!=null">#{parentId},</if>
+               #{commentor},#{createTime},#{content}
+            </trim>
+
+
+    </insert>
+
+    <select id="findCommentByParentId" resultMap="comment">
+        select * from comment where parentId = #{parentId}
+    </select>
+
+    <select id="findCommentById" resultMap="comment">
+        select * from comment where id=#{id}
+    </select>
+
+    <delete id="deletById">
+        delete from comment where id =#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ykh.mapper.speciality.SpecialityMapper">
+    <resultMap type="com.ykh.pojo.speciality.XueLei" id="xuelei">
+        <id column ="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <resultMap id="xilei" type="com.ykh.pojo.speciality.XiLei">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="xueleiId" property="xueleiId"/>
+    </resultMap>
+    <resultMap id="zhuanye" type="com.ykh.pojo.speciality.ZhuanYe">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="xilei" property="xilei"/>
+        <result column="code" property="code"/>
+        <result column="introduce" property="introduce"/>
+        <result column="goal" property="goal"/>
+        <result column="course" property="course"/>
+    </resultMap>
+
+    <select id="findAllXueLei" resultMap="xuelei">
+        select * from xuelei
+    </select>
+
+    <select id="findAllXiLeiById" resultMap="xilei" parameterType="int">
+        select * from xilei where xueleiId=#{xlid}
+    </select>
+    
+    <select id="findAllZhuanYeById" resultMap="zhuanye" parameterType="int">
+        select * from zhuanye where xilei = #{xlid} order by code
+    </select>
+
+    <select id="findZhuanYeByName" resultMap="zhuanye">
+        select * from zhuanye where name=#{name}
+    </select>
+</mapper>

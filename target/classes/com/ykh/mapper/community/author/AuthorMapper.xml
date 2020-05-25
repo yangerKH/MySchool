@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ykh.mapper.community.author.AuthorMapper">
+    <resultMap id="author" type="com.ykh.pojo.community.Author">
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="identity" property="identity"/>
+    </resultMap>
+    <select id="getAuthorByName" resultMap="author">
+        select * from user where name = #{name}
+    </select>
+    <select id="getIconByName" resultType="string">
+        select icon from user where name=#{name}
+    </select>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ykh.mapper.community.article.ArticleMapper">
+    <resultMap type="com.ykh.DTO.ArticleList" id="artList">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="author" property="author"/>
+        <result column="createTime" property="createTime"/>
+        <result column="type" property="type"/>
+        <result column="likeCount" property="likeCount"/>
+        <result column="unlikeCount" property="unlikeCount"/>
+        <result column="icon" property="icon"/>
+        <result column="readCount" property="readCount"/>
+    </resultMap>
+
+    <resultMap type="com.ykh.DTO.ArticleDetail" id="artDetail">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="author" property="author"/>
+        <result column="createTime" property="createTime"/>
+        <result column="type" property="type"/>
+        <result column="likeCount" property="likeCount"/>
+        <result column="unlikeCount" property="unlikeCount"/>
+        <result column="icon" property="icon"/>
+        <result column="readCount" property="readCount"/>
+        <result column="content" property="content"/>
+    </resultMap>
+    <select id="findAllArt" resultMap="artList">
+        select a.id,a.title,a.author,a.createTime,a.type,a.likeCount,a.unlikeCount,u.icon
+		from article a join user u on a.author=u.name where a.school=#{school};
+    </select>
+    <select id="findArtByType" resultMap="artList">
+        select a.id,a.title,a.author,a.createTime,a.type,a.likeCount,a.unlikeCount,u.icon
+		from article a join user u on a.author=u.name where a.school=#{school} and a.type=#{type};
+    </select>
+    <select id="findArtDeById" resultMap="artDetail">
+         select a.id,a.title,a.author,a.content,a.createTime,a.type,a.likeCount,a.unlikeCount,a.readCount,u.icon
+		from article a join user u on a.author=u.name where a.id=#{id};
+    </select>
+    <select id="findArtByAuthor" resultMap="artList">
+        select * from article where school=#{school} and author=#{author} order by likeCount desc limit 0,5
+    </select>
+    <insert id="addArticle" parameterType="com.ykh.pojo.community.Article">
+       insert into article(title,content,author,createTime,type,school) values
+            (#{title},#{content},#{author},#{createTime},#{type},#{school});
+    </insert>
+</mapper>

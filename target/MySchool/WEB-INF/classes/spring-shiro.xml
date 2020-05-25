@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <!-- 配置shiroFilter -->
+    <!-- 注意这里的shiroFilter要和web.xml中定义的shiro过滤器的id相同，否则会报错-->
+<!--    <context:property-placeholder location="classpath:shiro.properties" ignore-unresolvable="true"/>-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 装配 securityManager -->
+        <property name="securityManager" ref="securityManager" />
+        <!-- 配置登陆页面 -->
+        <property name="loginUrl" value="/pages/login.jsp"/>
+        <!-- 配置shiro的过滤器链 -->
+        <property name="filterChainDefinitions">
+            <value>
+               /login = anon
+                /chat/*=authc
+            </value>
+        </property>
+
+    </bean>
+
+    <!-- 配置进行认证和授权的realm -->
+    <bean id="userRealm" class="com.ykh.Realm.MyRealm">
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"></property>
+                <property name="hashIterations" value="10"></property>
+                <property name="storedCredentialsHexEncoded" value="true"/>
+            </bean>
+        </property>
+    </bean>
+<!--    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>-->
+    <!-- 配置安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"/>
+    </bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+</beans>

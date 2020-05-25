@@ -1,0 +1,107 @@
+.basic-info .basicInfo-block {
+    width: 395px;
+    float: left;
+}
+dl{
+    margin: 0;
+    padding: 0;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+.basic-info .basicInfo-block .basicInfo-item.name {
+    width: 90px;
+    padding: 0 5px 0 12px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    color: #999;
+}
+.basic-info .basicInfo-block .basicInfo-item {
+    line-height: 26px;
+    display: block;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+.basic-info .basicInfo-block {
+    width: 395px;
+    float: left;
+}
+.basic-info .basicInfo-block .basicInfo-item.value {
+    zoom: 1;
+    color: #333;
+    width: 285px;
+    float: left;
+    position: relative;
+    word-break: break-all;
+}
+.basic-info {
+    position: relative;
+    font: 12px/1.5 arial,'\5b8b\4f53',sans-serif;
+    font-size: 12px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+.cmn-clearfix:after{
+    content: '\0020';
+    display: block;
+    height: 0;
+    font-size: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+}
+.yuanxiaoneirong {
+    /*margin-left: 170px;*/
+    border: 1px solid #e1e1e1;
+}
+.yuanxiaoneirong_t {
+    background-color: #f3f3f3;
+    padding: 6px 0 6px 20px;
+    font-size: 18px;
+}
+.yuanxiaoneirong_c {
+    padding: 10px;
+    line-height: 26px;
+}
+.cleardiv {
+    clear: both;
+}
+
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.fa-sitemap:before {
+    content: "\f0e8";
+}
+.yuanxiaoneirong_c p {
+    margin: 0.5em 0;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.yuanxiaoneirong_t {
+    background-color: #f3f3f3;
+    padding: 6px 0 6px 20px;
+    font-size: 18px;
+}
+.kszyyx ul li {
+    float: left;
+    width: 33.3333333%;
+    padding: 5px 0;
+}
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ykh.mapper.realm.RealmMapper">
+    <resultMap type="com.ykh.pojo.realm.User" id="realmUser">
+        <result column="name" property="name"/>
+        <result column="pass" property="pass"/>
+    </resultMap>
+
+   <select id="findUserByName" resultMap="realmUser">
+       select * from user where name=#{name}
+   </select>
+
+    <select id="findRoleByName" resultType="string">
+        select r.name from user u
+        join user_role ur on (u.id=ur.userId)
+        join role r on (ur.roleId=r.id) where u.name =#{name}
+    </select>
+
+    <select id="findPermByName" resultType="string">
+        select p.name from user u
+            join user_role ur on (u.id =ur.userId)
+            join role_perm rp on (ur.roleId=rp.roleId)
+            join perm p on(rp.premId=p.id) where u.name=#{name}
+    </select>
+    <insert id="insertUser">
+        insert into user(name,pass) values (#{name},#{pass})
+    </insert>
+</mapper>

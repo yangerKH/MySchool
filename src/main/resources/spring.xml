@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <context:component-scan base-package="com.ykh" use-default-filters="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+<!--    开启注解模式-->
+    <context:annotation-config/>
+    <context:property-placeholder location="classpath:dataSource.properties" ignore-unresolvable="true"/>
+
+<!--    配置数据源-->
+    <bean class="com.mchange.v2.c3p0.ComboPooledDataSource" id="dataSource">
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="minPoolSize" value="${c3p0.minPoolSize}"/>
+        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>
+        <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/>
+    </bean>
+<!--    spring管理sqlsession,整合了spring与mybatis后有关mybatis的配置就在这里-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <property name="dataSource" ref="dataSource"/>
+<!--        mybatis的全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+    </bean>
+<!--    mapper的扫描-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ykh.mapper"></property>
+    </bean>
+<!--    以上都属于springDao层的配置-->
+
+<!--基于注解的aop配置-->
+    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+<!--        基于注解的事务控制-->
+    <tx:annotation-driven proxy-target-class="true"/>
+<!--    配置事务管理器-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:advice id ="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+<!--            在这里配置事务的属性,如果事务不加在这里，就无法对事务进行控制-->
+            <tx:method name="find*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="pointcut" expression="execution(public * com.ykh.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
+</beans>
